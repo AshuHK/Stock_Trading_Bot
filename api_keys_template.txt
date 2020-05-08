@@ -1,2 +1,2 @@
-Key: asdfasdfasdfasdf
-Secret: asdfasdfasdfasdf
+key: asdfasdfasdfasdf
+secret: asdfasdfasdfasdf
