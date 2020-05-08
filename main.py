@@ -1,5 +1,7 @@
-import alpaca_trade_api as trade_api 
 import time
+import matplotlib.pyplot as plt 
+import numpy as np 
+import alpaca_trade_api as trade_api 
 
 def parse_keys(file_obj): 
     keys_dict = {} 
@@ -24,9 +26,7 @@ def main():
 
     account = api.get_account() 
 
-    print(account.status)
-
-    pass
+    return None 
 
 if __name__ == "__main__": 
     main() 
