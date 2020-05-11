@@ -2,6 +2,7 @@ import time
 import alpaca_trade_api as trade_api
 from alpaca_trade_api import StreamConn
 
+
 class TradingBot:
     def __init__(self, api, connection):
         self.api = api
@@ -11,24 +12,25 @@ class TradingBot:
         async def on_minute(connection, channel, bar):
             symbol = bar.symbol
 
-            print("Close: {}".format(bar.close ))
+            print("Close: {}".format(bar.close))
             print("Open: {}".format(bar.open))
             print("Low: {}".format(bar.low))
             print(symbol)
 
             # buy when the Doji candle forms
-            if (bar.close > bar.open) and (bar.open - bar.low > .1):
+            if (bar.close > bar.open) and (bar.open - bar.low > 0.1):
                 print("Buying on Doji")
                 self.api.submit_order(symbol, 1, "buy", "market", "day")
 
             # taking profit at 1 percent
-            if (bar.open > bar.close) and (bar.open - bar.low < (bar.open * .01)):
+            if (bar.open > bar.close) and (bar.open - bar.low < (bar.open * 0.01)):
                 print("Selling at 1% profit")
                 self.api.submit_order(symbol, 1, "sell", "market", "day")
 
         # set up the running of the bot
         on_minute = self.connection.on(r"AM$")(on_minute)
         self.connection.run(["AM.TSLA"])
+
 
 def parse_keys(file_obj):
     keys_dict = {}
@@ -52,16 +54,20 @@ def main():
     # ayment is required to use Polygon streaming API
     data_url = "wss://alpaca.socket.polygon.io/stocks"
 
-
     # Use the REST API using the keys from Alpaca and the paper trading site
-    api = trade_api.REST(keys_dict["key"], keys_dict["secret"], trade_url, api_version="v2")
+    api = trade_api.REST(
+        keys_dict["key"], keys_dict["secret"], trade_url, api_version="v2"
+    )
 
-    connection = StreamConn("Polygon API key here", "Polygon API secret key here", data_url)
+    connection = StreamConn(
+        "Polygon API key here", "Polygon API secret key here", data_url
+    )
     trade_bot = TradingBot(api, connection)
 
     trade_bot.run()
 
     return None
+
 
 if __name__ == "__main__":
     main()
