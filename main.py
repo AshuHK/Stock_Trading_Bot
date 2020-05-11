@@ -7,7 +7,7 @@ from alpaca_trade_api import StreamConn
 class TradingBot: 
     def __init__(self, api, connection): 
         self.api = api
-        self.connection = StreamConn() 
+        self.connection = connection
     
     def run(self): 
         async def on_minute(connection, channel, bar): 
@@ -48,7 +48,7 @@ def main():
 
     connection = StreamConn(keys_dict["key"], keys_dict["secret"], data_url)
 
-    trade_bot = TradingBot(api)
+    trade_bot = TradingBot(api, connection)
 
     return None 
 
