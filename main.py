@@ -18,8 +18,11 @@ class TradingBot:
                 self.api.submit_order("TSLA", 1, "buy", "market", "day")
             
             # take profit at one percent 
-        
-        # self.connection = StreamConn()
+
+        # set up the running of the bot 
+        on_minute = self.connection.on(r"AM$")(on_minute)
+
+        connection.run(["AM.TSLA"])
 
 
 def parse_keys(file_obj): 
