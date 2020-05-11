@@ -31,7 +31,7 @@ class TradingBot:
 
         # set up the running of the bot 
         on_minute = self.connection.on(r"AM$")(on_minute)
-        connection.run(["AM.TSLA"])
+        self.connection.run(["AM.TSLA"])
 
 
 def parse_keys(file_obj): 
@@ -61,6 +61,8 @@ def main():
     connection = StreamConn(keys_dict["key"], keys_dict["secret"], data_url)
 
     trade_bot = TradingBot(api, connection)
+
+    trade_bot.run()
 
     return None 
 
