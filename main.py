@@ -22,8 +22,10 @@ def main():
     # setting this up for a paper trading account 
     url = "https://paper-api.alpaca.markets"
 
+    # Use the REST API using the keys from Alpaca and the paper trading site 
     api = trade_api.REST(keys_dict["key"], keys_dict["secret"], url, api_version="v2")
 
+    # get access to the account using the credentials 
     account = api.get_account() 
 
     return None 
