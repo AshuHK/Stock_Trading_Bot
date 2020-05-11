@@ -11,17 +11,22 @@ class TradingBot:
     
     def run(self): 
         async def on_minute(connection, channel, bar): 
+            symbol = bar.symbol
 
-            # using the Doji Candle method to choose when tp buy 
-            if (bar.close >= bar.open) and ((bar.open - bar.low) >= 0.1): 
-                print("Buying on Doji Candle")
-                self.api.submit_order("TSLA", 1, "buy", "market", "day")
+            print("Close: {}".format(bar.close ))
+            print("Open: {}".format(bar.open))
+            print("Low: {}".format(bar.low))
+            print(symbol)
+
+            if (bar.close > bar.open) and (bar.open - bar.low > .1): 
+                print("Buying on Doji")
+                self.api.submit_order(symbol, 1, "buy", "market", "day")
             
-            # take profit at one percent 
+            # taking profit at 1 percent 
+
 
         # set up the running of the bot 
         on_minute = self.connection.on(r"AM$")(on_minute)
-
         connection.run(["AM.TSLA"])
 
 
