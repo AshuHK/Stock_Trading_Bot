@@ -47,9 +47,12 @@ def parse_keys(file_obj):
 
 def main():
 
-    # use the template for to create api_keys.txt
-    file_obj = open("api_keys.txt", "r")
-    keys_dict = parse_keys(file_obj)
+    # use the templates for to create alpaca_api_keys.txt and polygon_api_keys.txt
+    alpaca_file_obj = open("api_keys.txt", "r")
+    alpaca_keys = parse_keys(alpaca_file_obj)
+
+    polygon_file_obj = open("polygon_keys.txt", "r")
+    polygon_keys = parse_keys(polygon_file_obj)
 
     # setting this up for a paper trading account
     trade_url = "https://paper-api.alpaca.markets"
@@ -59,14 +62,14 @@ def main():
 
     # Use the REST API using the keys from Alpaca and the paper trading site
     api = trade_api.REST(
-        keys_dict["key"], keys_dict["secret"], trade_url, api_version="v2"
+        alpaca_keys["key"], alpaca_keys["secret"], trade_url, api_version="v2"
     )
 
-    connection = StreamConn(
-        "Polygon API key here", "Polygon API secret key here", data_url
-    )
+    # establish the data streaming connection
+    connection = StreamConn(polygon_keys["key"], polygon_keys["secret"], data_url)
+
+    # create the trading bot object with the api and stream and run it
     trade_bot = TradingBot(api, connection)
-
     trade_bot.run()
 
     return None
