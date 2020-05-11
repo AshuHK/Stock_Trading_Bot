@@ -27,8 +27,7 @@ class TradingBot:
             if (bar.open > bar.close) and (bar.open - bar.low < (bar.open * .01)): 
                 print("Selling at 1% profit")
                 self.api.submit_order(symbol, 1, "sell", "market", "day")
-
-
+        
         # set up the running of the bot 
         on_minute = self.connection.on(r"AM$")(on_minute)
         self.connection.run(["AM.TSLA"])
@@ -52,14 +51,13 @@ def main():
 
     # setting this up for a paper trading account 
     trade_url = "https://paper-api.alpaca.markets"
-    data_url = "https://data.alpaca.markets/v1"
+    data_url = "wss://data.alpaca.markets/stream"
 
 
     # Use the REST API using the keys from Alpaca and the paper trading site 
     api = trade_api.REST(keys_dict["key"], keys_dict["secret"], trade_url, api_version="v2")
-
+    
     connection = StreamConn(keys_dict["key"], keys_dict["secret"], data_url)
-
     trade_bot = TradingBot(api, connection)
 
     trade_bot.run()
