@@ -10,8 +10,17 @@ class TradingBot:
 
     def run(self):
         async def on_minute(connection, channel, bar):
-            symbol = bar.symbol
+            """
+            For each minute that has passed in the data stream continuously, 
+            do a trade (buy or sell dependant on the position) 
 
+            :param connection: StreamConn that represents the data stream 
+            :param channel: Channel for the specific stock you want to trade 
+            :param bar: Bar for the specific stock being watched 
+            """
+            symbol = bar.symbol
+            
+            # basic debug output (change if needed)
             print("Close: {}".format(bar.close))
             print("Open: {}".format(bar.open))
             print("Low: {}".format(bar.low))
@@ -29,17 +38,26 @@ class TradingBot:
 
         # set up the running of the bot
         on_minute = self.connection.on(r"AM$")(on_minute)
+
+        # Change TSLA for any stock that you want to trade here
         self.connection.run(["AM.TSLA"])
 
 
 def parse_keys(file_obj):
     """
     Parses the given file to get the keys for the Alpaca/Polygon API keys
+
+    :param file_obj: File pointer to iterate through the file 
+
+    :return: a dictionary of the {key type : key} parings as strings  
     """
     keys_dict = {}
 
+    # iterate through the whole file and split at the color 
     for line in file_obj:
         line_list = line.split(":")
+
+        # also trims all white spcae on both ends just in case 
         keys_dict[line_list[0]] = line_list[1].strip("\n").strip(" ").strip("\t")
 
     return keys_dict
