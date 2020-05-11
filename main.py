@@ -18,11 +18,15 @@ class TradingBot:
             print("Low: {}".format(bar.low))
             print(symbol)
 
+            # buy when the Doji candle forms 
             if (bar.close > bar.open) and (bar.open - bar.low > .1): 
                 print("Buying on Doji")
                 self.api.submit_order(symbol, 1, "buy", "market", "day")
             
             # taking profit at 1 percent 
+            if (bar.open > bar.close) and (bar.open - bar.low < (bar.open * .01)): 
+                print("Selling at 1% profit")
+                self.api.submit_order(symbol, 1, "sell", "market", "day")
 
 
         # set up the running of the bot 
