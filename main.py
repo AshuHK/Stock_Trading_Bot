@@ -5,8 +5,9 @@ from alpaca_trade_api import StreamConn
 
 
 class TradingBot: 
-    def __init__(self, api): 
+    def __init__(self, api, connection): 
         self.api = api
+        self.connection = StreamConn() 
     
     def run(self): 
         async def on_minute(connection, channel, bar): 
@@ -15,6 +16,10 @@ class TradingBot:
             if (bar.close >= bar.open) and ((bar.open - bar.low) >= 0.1): 
                 print("Buying on Doji Candle")
                 self.api.submit_order("TSLA", 1, "buy", "market", "day")
+            
+            # take profit at one percent 
+        
+        # self.connection = StreamConn()
 
 
 def parse_keys(file_obj): 
@@ -34,10 +39,14 @@ def main():
     keys_dict = parse_keys(file_obj)
 
     # setting this up for a paper trading account 
-    url = "https://paper-api.alpaca.markets"
+    trade_url = "https://paper-api.alpaca.markets"
+    data_url = "https://data.alpaca.markets/v1"
+
 
     # Use the REST API using the keys from Alpaca and the paper trading site 
-    api = trade_api.REST(keys_dict["key"], keys_dict["secret"], url, api_version="v2")
+    api = trade_api.REST(keys_dict["key"], keys_dict["secret"], trade_url, api_version="v2")
+
+    connection = StreamConn(keys_dict["key"], keys_dict["secret"], data_url)
 
     trade_bot = TradingBot(api)
 
