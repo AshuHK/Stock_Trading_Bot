@@ -22,7 +22,7 @@ class TradingBot:
                 print("Buying on Doji")
                 self.api.submit_order(symbol, 1, "buy", "market", "day")
 
-            # taking profit at 1 percent
+            # taking profit at 1 percent (Not sure if this is right)
             if (bar.open > bar.close) and (bar.open - bar.low < (bar.open * 0.01)):
                 print("Selling at 1% profit")
                 self.api.submit_order(symbol, 1, "sell", "market", "day")
@@ -33,6 +33,9 @@ class TradingBot:
 
 
 def parse_keys(file_obj):
+    """
+    Parses the given file to get the keys for the Alpaca/Polygon API keys
+    """
     keys_dict = {}
 
     for line in file_obj:
