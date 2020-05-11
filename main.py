@@ -1,7 +1,21 @@
 import time
-import matplotlib.pyplot as plt 
-import numpy as np 
 import alpaca_trade_api as trade_api 
+from alpaca_trade_api import StreamConn
+
+
+
+class TradingBot: 
+    def __init__(self, api): 
+        self.api = api
+    
+    def run(self): 
+        async def on_minute(connection, channel, bar): 
+
+            # using the Doji Candle method to choose when tp buy 
+            if (bar.close >= bar.open) and ((bar.open - bar.low) >= 0.1): 
+                print("Buying on Doji Candle")
+                self.api.submit_order("TSLA", 1, "buy", "market", "day")
+
 
 def parse_keys(file_obj): 
     keys_dict = {} 
@@ -25,8 +39,7 @@ def main():
     # Use the REST API using the keys from Alpaca and the paper trading site 
     api = trade_api.REST(keys_dict["key"], keys_dict["secret"], url, api_version="v2")
 
-    # get access to the account using the credentials 
-    account = api.get_account() 
+    trade_bot = TradingBot(api)
 
     return None 
 
