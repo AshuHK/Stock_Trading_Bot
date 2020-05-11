@@ -19,7 +19,7 @@ class TradingBot:
             :param bar: Bar for the specific stock being watched 
             """
             symbol = bar.symbol
-            
+
             # basic debug output (change if needed)
             print("Close: {}".format(bar.close))
             print("Open: {}".format(bar.open))
@@ -53,11 +53,11 @@ def parse_keys(file_obj):
     """
     keys_dict = {}
 
-    # iterate through the whole file and split at the color 
+    # iterate through the whole file and split at the color
     for line in file_obj:
         line_list = line.split(":")
 
-        # also trims all white spcae on both ends just in case 
+        # also trims all white spcae on both ends just in case
         keys_dict[line_list[0]] = line_list[1].strip("\n").strip(" ").strip("\t")
 
     return keys_dict
